@@ -1,0 +1,49 @@
+{% extends "base.html" %}  <!--extends: Contrario a import, se lo lleva a otro sitio -->
+
+{% block pageContent %}
+            <h1>Listado de Ingresos-Gastos</h1>
+            <h2>Un simulacro de contabilidad</h2>
+        
+      <!--<p>El servidor está <em>funcionando</em></p>
+         Para los saltos de línea se utiliza <br> 
+            <em> para ponerlo en cursiva y se puede usar dentro de la misma frase que se está escribiendo
+            htmltidy.net
+           
+        <a href="http://localhost:5000/nuevo">Añadir ingresos y gastos</a>
+
+        <ol attr="valor">
+            <li>Elemento de lista 1</li>
+            <li>Elemento de lista 2</li>
+        </ol> Lista ordenada
+
+        <ul attr="valor">
+            <li>Elemento de lista 1</li>
+            <li>Elemento de lista 2</li>
+        </ul> Lista desordenada -->
+
+            <table border="5">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Concepto</th>
+                        <th>Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>01/01/2022</td>
+                        <td>Sueldo</td>
+                        <td>+1000.00 €</td>
+                    </tr>
+                    <tr>
+                        <td>05/01/2022</td>
+                        <td>Reyes</td>
+                        <td>-350.00 €</td>
+                    </tr>
+                </tbody>
+            <tr></tr>
+        </table>
+
+       <br> <a href="http://localhost:5000/nuevo">Añadir</a>
+
+{% endblock %}
