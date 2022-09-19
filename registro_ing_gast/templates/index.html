@@ -30,16 +30,15 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for registro in movements %}
+                    <!-- Comentario: Repetir las lineas con un for -->
                     <tr>
-                        <td>01/01/2022</td>
-                        <td>Sueldo</td>
-                        <td>+1000.00 €</td>
+                        <td>{{registro[0]}}</td> <!-- Comentario: Se indica la posición de cada valor para registro (viene del archivo routes.py) -->
+                        <td>{{registro[1]}}</td>
+                        <td>{{registro[2]}} €</td>
                     </tr>
-                    <tr>
-                        <td>05/01/2022</td>
-                        <td>Reyes</td>
-                        <td>-350.00 €</td>
-                    </tr>
+                    {% endfor %} <!-- Comentario: Final del for -->
+                    
                 </tbody>
             <tr></tr>
         </table>

@@ -3,11 +3,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ingresos-Gastos: {{pageTitle}}</title> <!--hueco para variable-->
+    <title>Ingresos-Gastos: {{pageTitle}}</title> <!--Jinja lee la variable entre dos llaves. Es un hueco para variable-->
 </head>
 <body>
     <header>
         Aplicación Flask 1
+        <nav><br> <a href="http://localhost:5000/index">Home</a> |
+            <a href="http://localhost:5000/nuevo">Añadir datos</a> |           
+            <a href="http://localhost:5000/modification">Editar datos</a> |
+            <a href="http://localhost:5000/delete">Eliminado</a></nav>
     </header>
     <section>
     {% block pageContent%}{% endblock %} <!--hueco para bloque-->
