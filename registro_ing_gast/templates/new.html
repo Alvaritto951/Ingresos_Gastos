@@ -5,19 +5,26 @@
     <h1>Alta de Ingreso-Gasto</h1>
     <form action="/nuevo" method="POST"> <!-- Es necesario indicar la ruta en la que estamos rellenando datos e indicar el método que queremos utilizar para enviarlo a index-->
         <label for="date">Fecha:</label><br>
-        <input type="date" id="date" name="date" required><br><br>
+        <input type="date" id="date" name="date" value="{{ dataForm.date }}" required><br><br> <!-- el dataForm va a routes.py, a su propio render_template-->
         
         <label for="description">Concepto:</label><br>
-        <input type="text" id="description" name="description" placeholder="Descripción movimiento"><br><br>
+        <input type="text" id="description" name="description" placeholder="Descripción movimiento" value="{{ dataForm.description }}"><br><br>
         
         <label for="quantity">Importe:</label><br>
-        <input type="number" step="0.01" id="quantity" name="quantity" placeholder="00.00 €"><br><br> <!--step es para poner decimales-->
+        <input type="number" step="0.01" id="quantity" name="quantity" placeholder="00.00 €" value="{{ dataForm.quantity }}"><br><br> <!--step es para poner decimales & placeholder el ejemplo a seguir-->
         
         <input type="submit" value="Enviar">
     </form>
+
+    <article class="errores">
+        <ul>
+            {% for error in msgErrors %}
+                    <!-- Comentario: Repetir las lineas con un for -->
+                <li>{{ error }}</li> <!-- Comentario: Se indica la posición de cada valor para registro (viene del archivo routes.py) -->
+            {% endfor %}
+        </ul>
+    </article>
+
+
     <a href="http://localhost:5000/index">Home</a>
-    </section>
-    
-</body>
-</html>
 {% endblock %}
