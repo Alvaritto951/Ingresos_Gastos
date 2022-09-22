@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, url_for
 import csv
 from registro_ing_gast import app
 from datetime import date
@@ -43,7 +43,7 @@ def index():
 def nuevo():
     if request.method == "GET": #Si el método es GET, muestra la página web de añadir datos (/nuevo)
         return render_template("new.html", pageTitle="Alta", dataForm={})
-#El dataForm va la html new.html y sirve para indicar un diccionario vacío para que dejemos el dato correcto que en el campo que habíamos escrito
+#El dataForm va la html new.html y sirve para indicar un diccionario vacío para que dejemos el dato correcto en el campo que habíamos escrito
     else:
         #Hacer validación para todos los formularios
         """
@@ -54,11 +54,24 @@ def nuevo():
         """
         errores = validaFormulario(request.form)
         if not errores: #1º validar --- Si no hay errores, se añade línea
+            #Generar un nuevo id
+            #1. leer todas las líneas del fichero, me quedo con el ultimo registro
+            fichero = open("data/last_id.txt", 'r') #Se consulta el txt donde se encuentra el último registro
+            registro = fichero.read() #Leer el documento
+            id = int(registro) + 1 #Al último id se le añade una posición
+            fichero.close()
+            
             fichero = open("data/movimientos.txt", 'a', newline='') #Si no, añade una línea más
             csvWriter = csv.writer(fichero, delimiter=",", quotechar='"') #Lee el archivo txt y lo procesa de tal manera que se pueda escribir
-
-            csvWriter.writerow([request.form['date'], request.form['description'], request.form['quantity']]) #Se añade/escribe en el txt
+            
+            #2. El nuevo id sera el id del último registro + 1
+            csvWriter.writerow([id, request.form['date'], request.form['description'], request.form['quantity']]) #Se añade/escribe en el txt
             fichero.close()
+
+            fichero = open("data/last_id.txt", "w")
+            fichero.write(str(id))
+            fichero.close()
+
 
             return redirect("/index") #Y lo redirige al documento index si es correcto.
         else:
@@ -80,11 +93,53 @@ def validaFormulario(camposFormulario):
 
 
 
-@app.route("/modification")
-def modificacion():
-    return render_template("mod.html", pageTitle="Modificación")
+@app.route("/modification/<int:id>", methods=["GET", "POST"])
+def modificacion(id):
+    if request.method == "GET":
+        """
+        1º Consultar en movimientos.txt y recuperar el registro con id al de la petición
+        2º Devolver el formulario html con los datos de mi registro
+        """
+        
+        return render_template("mod.html", registro=[])
+    else:
+        """
+        1º Validar registro de entrada
+        2º Si el registro es correcto, lo sustituyo en movimientos.txt. La mejor manera es copiar registro a registro en fichero nuevo y dar el cambiazo
+        3º Redirect
+        4º Si el registro es incorrecto, la gestión de errores que conocemos
+        """
+        
 
-@app.route("/delete")
-def eliminar():
-    return render_template("delete.html", pageTitle="Eliminado")
+@app.route("/delete/<int:id>", methods=["GET", "POST"])
+def eliminar(id):
+    if request.method == "GET":
+        """
+        1º Consultar en movimientos.txt y recuperar el registro con id al de la peticion
+        2º Devolver el formulario html con los datos de mi registro, no modificables
+        3º Tendrá un botón que diga confirmar
+        """
+        fichero = open("data/movimientos.txt", 'r', newline='') #Si no, añade una línea más
+        csvReader = csv.reader(fichero, delimiter=",", quotechar='"')
+        registro_definitivo = []
+        for registro in csvReader: 
+            if registro[0] == str(id): #Posición inicial es igual a string del id, que no acepta enteros
+                registro_definitivo = registro
+                break
+        fichero.close()
+
+        if registro_definitivo:
+            return render_template("delete.html", registro=registro_definitivo)
+        else:
+            return redirect(url_for("index")) #url_for(def index) entre comillas se transforma en "/"
+
+        
+    else:
+        """
+        Borrar el registro
+        """
+        return f"El registro que quieres borrar es el {id}"
+        pass
+
+    
 

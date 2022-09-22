@@ -1,22 +1,36 @@
 {% extends "base.html"%}
 
 {% block pageContent %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ingresos-Gastos: Modificación</title>
-</head>
-<body>
-    
-    <section>
-    <h1>Editar Ingreso o Gasto</h1>
-    <p>En construcción entrada de datos</p>
-    <a href="http://localhost:5000/index">Volver</a>
-    
-    </section>
-  
-</body>
-</html>
+<h1>Modificar Ingreso-Gasto</h1>
+    <table>
+
+    <th action="/modification" method="POST"> <!-- Es necesario indicar la ruta en la que estamos rellenando datos e indicar el método que queremos utilizar para enviarlo a index-->
+        <tr><label for="date">Fecha:</label><br>
+        <input type="date" id="date" name="date" value="{{ registro.1 }}" required><br><br> <!-- el dataForm va a routes.py, a su propio render_template-->
+        </tr>
+        
+        <label for="description">Concepto:</label><br>
+        <input type="text" id="description" name="description" placeholder="Descripción movimiento" value="{{ registro.2 }}"><br><br>
+        
+        <label for="quantity">Importe:</label><br>
+        <input type="number" step="0.01" id="quantity" name="quantity" placeholder="00.00 €" value="{{ registro.3 }}"><br><br> <!--step es para poner decimales & placeholder el ejemplo a seguir-->
+
+        <label for="#">Modificar</label>
+        <input type="checkbox" name="#" id="#" value="{{ registro.# }}"> <br><br>
+        
+        <input type="submit" value="Enviar">
+    </th>
+    </table>
+
+    <article class="errores">
+        <ul>
+            {% for error in msgErrors %}
+                    <!-- Comentario: Repetir las lineas con un for -->
+                <li>{{ error }}</li> <!-- Comentario: Se indica la posición de cada valor para registro (viene del archivo routes.py) -->
+            {% endfor %}
+        </ul>
+    </article>
+
+
+    <a href="http://localhost:5000/index">Home</a>
 {% endblock %}

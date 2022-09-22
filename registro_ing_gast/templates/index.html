@@ -27,21 +27,23 @@
                         <th>Fecha</th>
                         <th>Concepto</th>
                         <th>Cantidad</th>
+                        <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for registro in movements %}
                     <!-- Comentario: Repetir las lineas con un for -->
-                    <tr>
-                        <td>{{registro[0]}}</td> <!-- Comentario: Se indica la posición de cada valor para registro (viene del archivo routes.py) -->
-                        <td>{{registro[1]}}</td>
-                        <td>{{registro[2]}} €</td>
+                    <tr> <!-- Comentario: Se indica la posición de cada valor para registro (viene del archivo routes.py) -->
+                        <td>{{registro[1]}}</td> <!-- Fecha -->
+                        <td>{{registro[2]}}</td> <!-- Descripción -->
+                        <td>{{registro[3]}} €</td> <!-- Cantidad-->
+                        <td><a href="/delete/{{ registro[0] }}">🚽</a>
+                        <a href="/modification/{{ registro[0] }}">Modificar</a></td>
                     </tr>
                     {% endfor %} <!-- Comentario: Final del for -->
                     
                 </tbody>
-            <tr></tr>
-        </table>
+            </table>
 
        <br> <a href="http://localhost:5000/nuevo">Añadir</a>
 

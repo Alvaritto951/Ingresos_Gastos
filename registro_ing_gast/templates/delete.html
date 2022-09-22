@@ -1,22 +1,24 @@
 {% extends "base.html"%}
 
 {% block pageContent %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ingresos-Gastos: Eliminado</title>
-</head>
-<body>
-    <section>
-    <h1>Eliminar Ingreso o Gasto</h1>
-    <p>En construcción entrada de datos</p>
-    <a href="http://localhost:5000/index">Volver</a>
-    
-    </section>
-    
+<table border="5">
+        <tr>
+            <td>Fecha:</td>
+            <td>{{ registro[1] }}</td>
+        </tr>
+        <tr>
+            <td>Concepto:</td>
+            <td>{{ registro[2] }}</td>
+        </tr>
+        <tr>
+            <td>Cantidad</td>
+            <td>{{ registro[3] }}</td>
+        </tr>
+</table>
 
-</body>
-</html>
+<form action="/delete/{{ registro[0] }}" method="POST">
+    <input type="submit" value="Aceptar">
+</form>
 {% endblock %}
+
+<!-- Traer los datos de movimiento a la tabla-->
