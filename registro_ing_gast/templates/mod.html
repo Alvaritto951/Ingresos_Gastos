@@ -1,7 +1,29 @@
 {% extends "base.html"%}
 
 {% block pageContent %}
-<h1>Modificar Ingreso-Gasto</h1>
-    <table>
+<h1>Modificar Ingreso-Gasto</h1>  <!-- Esto es casi igual que en new.html -- Indicar el nº de registro (posiciones) & cada posición de la lista en el value-->
+<form action="/modification/{{registro[0]}}" method="POST">
+    <label for="date">Fecha:</label><br>
+    <input type="date" name="date" id="date" value="{{ registro[1] }}" required> <br><br>
+
+    <label for=""> Descripción:</label><br>
+    <input type="text" name="description" id="description"  value="{{ registro[2] }}"> <br><br>
+
+    <label for="quantity">Cantidad:</label><br>
+    <input type="number" name="quantity" id="quantity"  step="0.01"  value="{{ registro[3] }}"> <br><br>
+
+    <input type="submit" value="Modificar"> <!-- Se crea el botón de modificar-->
+
+</form>
+
+<br><br> <a href="/index"> Home</a>  <br><br> <!-- Llévame a index-->
+
+<article class="errores"> <!-- Mostrar los errores, tal y como los gestionamos -->
+    <ul>
+            {% for error in msgErrors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+    </ul>
+</article>
    
 {% endblock %}

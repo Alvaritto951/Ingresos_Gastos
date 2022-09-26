@@ -81,3 +81,23 @@ def insert(registro): #Inserta el último registro y te suma uno más
 
     saveLastId(id)
 
+def update_by(registro_mod):
+    """
+    Sobreescribe el registro cuyo id coincide con el de entrada
+    """
+    fichero_old = open(MOVIMIENTOS_FILE, "r")
+    fichero = open(NEW_FILE, "w", newline='')
+    csvReader = csv.reader(fichero_old, delimiter=",", quotechar='"')
+    csvWriter = csv.writer(fichero, delimiter=",", quotechar='"')
+
+    for registro in csvReader:
+        if registro[0] == str(registro_mod[0]): #Si la posición inicial en registro es la misma que en registro_mod
+            csvWriter.writerow(registro_mod)    #Modificas la misma línea en registro_mod
+        else:
+            csvWriter.writerow(registro) #Si no, se deja tal y como está
+
+    fichero_old.close()
+    fichero.close()
+
+    os.remove(MOVIMIENTOS_FILE)
+    os.rename(NEW_FILE, MOVIMIENTOS_FILE)

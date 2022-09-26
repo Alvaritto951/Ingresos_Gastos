@@ -1,6 +1,6 @@
-1,01-01-2022,Sueldo,1000.0
-2,05-01-2022,Reyes,-350.56
-3,06-01-2022,"Los padres, firmado: el banquero",100.0
-4,2022-09-06,Cena,136.3
-5,2022-09-08,Sueldo,10006,2022-09-15,Bizum comida,25None,2022-09-01,Sueldo,10000
-None,2022-09-01,Sueldo,10000
+1,2021-12-27,Sueldo,1000.05
+2,2021-12-30,Reyes,-350.56
+3,2022-01-06,"Los padres, firmado: el banquero",100.0
+4,['date'],['description'],['quantity']
+5,2022-09-08,Sueldo,1000
+6,2022-09-15,Bizum comida,25.00

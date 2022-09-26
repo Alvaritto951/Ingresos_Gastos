@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, url_for
 import csv
 from config import MOVIMIENTOS_FILE, NEW_FILE, LAST_ID_FILE
 from registro_ing_gast import app
-from registro_ing_gast.models import select_all, select_by, delete_by, insert
+from registro_ing_gast.models import select_all, select_by, delete_by, insert, update_by
 from datetime import date
 import os #Es para poder Borrar (delete) y renombrar (rename)
 
@@ -47,7 +47,7 @@ def nuevo():
         2º Concepto no sea vacío
         3º Cantidad no sea 0 o vacía
         """
-        
+        #ERRORES --- ES MUY IMPORTANTE -- ANOTAR PARA POSTERIORES OCASIONES
         errores = validaFormulario(request.form)
         if not errores: #Viene de models.py (from registro_ing_gast.models import insert(registro))
             insert([request.form['date'],
@@ -71,8 +71,9 @@ def validaFormulario(camposFormulario):
     
     return errores
 
+def form_to_list(id, form): #En vez de escribir tantas veces la lista, lo devolvemos en forma de función, pasa el id y el formulario
+    return [id, form['date'], form['description'], form['quantity']]
 
-#TODO
 @app.route("/modification/<int:id>", methods=["GET", "POST"])
 def modificacion(id):
     if request.method == "GET":
@@ -80,8 +81,12 @@ def modificacion(id):
         1º Consultar en movimientos.txt y recuperar el registro con id al de la petición
         2º Devolver el formulario html con los datos de mi registro
         """
-        
-        return render_template("mod.html", registro=[])
+        registro_definitivo = select_by(id) #1º Consultar en movimientos.txt y recuperar el registro con id al de la petición
+
+        if registro_definitivo:
+            return render_template("mod.html", registro=registro_definitivo, pageTitle="Actualizar/Modificar") #2º Devolver el formulario html con los datos de mi registro
+        else:
+            return redirect(url_for("index")) #Si no, llévame a index
     else:
         """
         1º Validar registro de entrada
@@ -89,6 +94,18 @@ def modificacion(id):
         3º Redirect
         4º Si el registro es incorrecto, la gestión de errores que conocemos
         """
+        errores = validaFormulario(request.form) #1º Validar registro de entrada
+        
+        if not errores:
+            update_by(form_to_list(id, request.form)) #Viene de la función form_to_list
+            #2º Si el registro es correcto, lo sustituyo en movimientos.txt (con la función que viene de models.py: update_by(id)).
+            #La mejor manera es copiar registro a registro en fichero nuevo y dar el cambiazo
+
+            return redirect(url_for("index")) #3º Redirect
+        else:
+            return render_template("mod.html", pageTitle="Actualizar/Modificar", msgErrors=errores,
+             registro=[request.form]) #Viene de la función form_to_list
+             #4º Si el registro es incorrecto, la gestión de errores que conocemos
         
 
 @app.route("/delete/<int:id>", methods=["GET", "POST"])
@@ -111,7 +128,7 @@ def eliminar(id):
         """
         Borrar el registro
         1. Abrir fichero movimientos.txt en lectura
-        2. abrir fichero nmovimiento.txt en escritura
+        2. abrir fichero new_movimiento.txt en escritura
         3. copiar todos los registros uno a uno en su orden exceptuando el que queremos borrar
         4. borrar movimientos.txt
         5. renombrar nmovimientos.txt a movimientos.txt
