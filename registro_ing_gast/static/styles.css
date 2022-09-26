@@ -1,0 +1,8 @@
+li.error {
+    color: darkblue ;
+    text-decoration: underline;
+}
+
+#quantity {
+    color: darkgreen
+}

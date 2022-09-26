@@ -104,7 +104,7 @@ def modificacion(id):
             return redirect(url_for("index")) #3º Redirect
         else:
             return render_template("mod.html", pageTitle="Actualizar/Modificar", msgErrors=errores,
-             registro=[request.form]) #Viene de la función form_to_list
+             registro=form_to_list(id, request.form)) #Viene de la función form_to_list
              #4º Si el registro es incorrecto, la gestión de errores que conocemos
         
 
